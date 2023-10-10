@@ -28,7 +28,7 @@ public class UserController {
   // metodo de cadastro
   // anotação para indicar que é um metodo post
   @PostMapping("/")
-  public ResponseEntity<UserModel> create(@RequestBody UserModel userModel) {
+  public ResponseEntity create(@RequestBody UserModel userModel) {
 
     var user = this.userRepository.findByUsername(userModel.getUsername());
 
