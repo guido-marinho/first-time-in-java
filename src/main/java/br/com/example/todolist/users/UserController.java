@@ -37,7 +37,7 @@ public class UserController {
   // modificador -> tipo de retorno -> nome do metodo -> parametros (definindo que
   // as informações vão vir no corpo da requisição)
   public void create(@RequestBody UserModel userModel) {
-    // prntar no terminal
-    System.out.println(userModel.username);
+    // prntar no terminal (recuperando o valor do username pelo metodo getUsername)
+    System.out.println(userModel.getUsername());
   }
 }
