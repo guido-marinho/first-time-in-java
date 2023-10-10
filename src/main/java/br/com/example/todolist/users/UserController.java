@@ -1,5 +1,7 @@
 package br.com.example.todolist.users;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,24 +22,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
 
-  // metodo de cadastro
-  /*
-   * principais tipos de dados:
-   * String
-   * Intenger
-   * Double
-   * Float
-   * char
-   * Date
-   * Void
-   */
+  @Autowired
+  private IUserRepository userRepository;
 
+  // metodo de cadastro
   // anotação para indicar que é um metodo post
   @PostMapping("/")
-  // modificador -> tipo de retorno -> nome do metodo -> parametros (definindo que
-  // as informações vão vir no corpo da requisição)
-  public void create(@RequestBody UserModel userModel) {
-    // prntar no terminal (recuperando o valor do username pelo metodo getUsername)
-    System.out.println(userModel.getUsername());
+  public ResponseEntity<UserModel> create(@RequestBody UserModel userModel) {
+
+    var user = this.userRepository.findByUsername(userModel.getUsername());
+
+    // diferente em java !+=
+    if (user != null) {
+      System.out.println("Usuário já existe");
+      return ResponseEntity.status(400).body("Usuário já existe");
+    }
+
+    var userCreated = this.userRepository.save(userModel);
+
+    return ResponseEntity.status(200).body(userCreated);
   }
 }
