@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 // o nome da classe precisa ser o  msm nome do arquivo
 // começa sempre com letra maiuscula
 /**
@@ -37,6 +39,10 @@ public class UserController {
       System.out.println("Usuário já existe");
       return ResponseEntity.status(400).body("Usuário já existe");
     }
+
+    var passwordHashred = BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray());
+
+    userModel.setPassword(passwordHashred);
 
     var userCreated = this.userRepository.save(userModel);
 
